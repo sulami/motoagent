@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from moto.models import Bike
+
+admin.site.register(Bike)
+
