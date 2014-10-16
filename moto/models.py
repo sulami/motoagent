@@ -30,10 +30,10 @@ class Bike(models.Model):
     model = models.CharField(max_length=30, null=True)
     power = models.IntegerField(null=True)
     price = models.IntegerField(null=True)
-    release = models.IntegerField(null=True)
     seats = models.IntegerField(null=True)
     strokes = models.IntegerField(null=True)
     weight = models.IntegerField(null=True)
+    year = models.IntegerField(null=True)
 
     # TODO
     # Add variable features like electrical starters, etc...
