@@ -26,6 +26,7 @@ class Bike(models.Model):
     fairings = models.IntegerField(choices=fairing_choices, null=True)
     height = models.IntegerField(null=True)
     ignition = models.IntegerField(choices=ignition_choices, null=True)
+    link = models.URLField(null=True)
     make = models.CharField(max_length=20, null=True)
     model = models.CharField(max_length=30, null=True)
     power = models.IntegerField(null=True)
