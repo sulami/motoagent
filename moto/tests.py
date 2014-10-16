@@ -1,8 +1,8 @@
-from django.test import TestCase
+from django.test import TestCase, LiveServerTestCase
 
 from moto.models import Bike
 
-class BasicBikeTestCase(TestCase):
+class UnitTestCase(TestCase):
     def test_bike_creation_and_deletion(self):
         """Test basic database interaction by creating and deleting one bike"""
 
@@ -37,4 +37,8 @@ class BasicBikeTestCase(TestCase):
         self.assertEqual(len(q), 0)
         q = Bike.objects.all()
         self.assertEqual(len(q), 0)
+
+class IntegrationTestCase(LiveServerTestCase):
+    def test_stuff(self):
+        pass
 
