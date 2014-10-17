@@ -40,5 +40,5 @@ class Bike(models.Model):
     # Add variable features like electrical starters, etc...
 
     def __unicode__(self):
-        return u'{} {} {}'.format(self.release, self.make, self.model)
+        return u'{} {} {}'.format(self.year, self.make, self.model)
 
