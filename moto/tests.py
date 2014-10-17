@@ -55,19 +55,34 @@ class IntegrationTestCase(TestCase):
         b.model = 'XS400'
         b.save()
 
+        b = Bike()
+        b.year = 2008
+        b.make = 'Honda'
+        b.model = 'CBR1000RR'
+        b.save()
+
     def test_table_with_all_bikes(self):
         r = self.c.get('/')
         self.assertEqual(200, r.status_code)
         self.assertIn('1981 Yamaha XS400', r.content)
+        self.assertIn('2008 Honda CBR1000RR', r.content)
 
     def test_index_with_query(self):
         r = self.c.get('/?make=yamaha')
         self.assertEqual(200, r.status_code)
         self.assertIn('1981 Yamaha XS400', r.content)
+        self.assertNotIn('2008 Honda CBR1000RR', r.content)
 
-        r = self.c.get('/?make=honda')
+        r = self.c.get('/?min_year=2000')
+        self.assertEqual(200, r.status_code)
+        self.assertIn('2008 Honda CBR1000RR', r.content)
+        self.assertNotIn('1981 Yamaha XS400', r.content)
+
+    def test_query_without_results(self):
+        r = self.c.get('/?make=Suzuki')
         self.assertEqual(200, r.status_code)
         self.assertNotIn('1981 Yamaha XS400', r.content)
+        self.assertNotIn('2008 Honda CBR1000RR', r.content)
 
     def test_detail_page(self):
         r = self.c.get('/1/')
@@ -75,6 +90,10 @@ class IntegrationTestCase(TestCase):
         self.assertIn('1981 Yamaha XS400', r.content)
 
         r = self.c.get('/2/')
+        self.assertEqual(200, r.status_code)
+        self.assertIn('2008 Honda CBR1000RR', r.content)
+
+        r = self.c.get('/3/')
         self.assertEqual(404, r.status_code)
         self.assertNotIn('1981 Yamaha XS400', r.content)
 
