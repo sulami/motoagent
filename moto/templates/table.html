@@ -1,4 +1,8 @@
+<table>
 {% for b in bikes %}
+    <tr>
     <a href="{% url 'detail' b.pk %}">{{ b }}</a>
+    </tr>
 {% endfor %}
+</table>
 

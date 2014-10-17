@@ -1,11 +1,9 @@
-from django.test import TestCase, LiveServerTestCase
+from django.test import TestCase, Client
 
 from moto.models import Bike
 
 class UnitTestCase(TestCase):
-    def test_bike_creation_and_deletion(self):
-        """Test basic database interaction by creating and deleting one bike"""
-
+    def setUp(self):
         b = Bike()
         b.cylinders = 2
         b.displacement = 392
@@ -21,10 +19,19 @@ class UnitTestCase(TestCase):
         b.year = 1981
         b.save()
 
+    def test_bike_creation(self):
         q = Bike.objects.all()
         self.assertEqual(len(q), 1)
         q = Bike.objects.filter(make='Yamaha', year__gt=1980)
         self.assertEqual(len(q), 1)
+
+        b = q.first()
+
+        self.assertEqual(b.displacement, 392)
+        self.assertEqual(b.weight, 182)
+
+    def test_bike_deletion(self):
+        q = Bike.objects.all()
 
         b = q.first()
 
@@ -38,7 +45,36 @@ class UnitTestCase(TestCase):
         q = Bike.objects.all()
         self.assertEqual(len(q), 0)
 
-class IntegrationTestCase(LiveServerTestCase):
-    def test_stuff(self):
-        pass
+class IntegrationTestCase(TestCase):
+    def setUp(self):
+        self.c = Client()
+
+        b = Bike()
+        b.year = 1981
+        b.make = 'Yamaha'
+        b.model = 'XS400'
+        b.save()
+
+    def test_table_with_all_bikes(self):
+        r = self.c.get('/')
+        self.assertEqual(200, r.status_code)
+        self.assertIn('1981 Yamaha XS400', r.content)
+
+    def test_index_with_query(self):
+        r = self.c.get('/?make=yamaha')
+        self.assertEqual(200, r.status_code)
+        self.assertIn('1981 Yamaha XS400', r.content)
+
+        r = self.c.get('/?make=honda')
+        self.assertEqual(200, r.status_code)
+        self.assertNotIn('1981 Yamaha XS400', r.content)
+
+    def test_detail_page(self):
+        r = self.c.get('/1/')
+        self.assertEqual(200, r.status_code)
+        self.assertIn('1981 Yamaha XS400', r.content)
+
+        r = self.c.get('/2/')
+        self.assertEqual(404, r.status_code)
+        self.assertNotIn('1981 Yamaha XS400', r.content)
 
