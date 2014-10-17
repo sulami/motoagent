@@ -21,12 +21,7 @@ def table(request):
     for i in request.GET.getlist('seats'):
         seats |= Q(seats__icontains=i)
 
-    q = Bike.objects.filter(
-        engineform,
-        fairings,
-        make,
-        seats,
-    )
+    q = Bike.objects.filter(engineform, fairings, make, seats)
 
     if request.GET.get('min_cylinders'):
         q.filter(cylinders__gte=request.GET.get('min_cylinders'))
@@ -59,7 +54,7 @@ def table(request):
     if request.GET.get('max_year'):
         q.filter(year__lte=request.GET.get('max_year'))
 
-    print q.query
+    return render(request, 'table.html', {'bikes': q})
 
 def item(request, id):
     pass
