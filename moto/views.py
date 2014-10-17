@@ -1,5 +1,5 @@
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from moto.models import Bike
 
@@ -53,6 +53,7 @@ def table(request):
 
     return render(request, 'table.html', {'bikes': q})
 
-def item(request, id):
-    pass
+def detail(request, id):
+    return render(request, 'detail.html',
+                  {'bike': get_object_or_404(Bike, pk=id)})
 

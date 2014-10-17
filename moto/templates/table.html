@@ -1,4 +1,4 @@
 {% for b in bikes %}
-    {{ b }}
+    <a href="{% url 'detail' b.pk %}">{{ b }}</a>
 {% endfor %}
 
