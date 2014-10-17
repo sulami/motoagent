@@ -3,9 +3,6 @@ from django.shortcuts import render
 
 from moto.models import Bike
 
-def index(request):
-    pass
-
 def table(request):
 
     engineform = Q()
