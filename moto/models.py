@@ -5,6 +5,7 @@ form_choices = (
     (2, 'v'),
     (3, 'boxer'),
     (4, 'rotary'),
+    (5, 'electrical'),
 )
 
 fairing_choices = (
@@ -41,4 +42,37 @@ class Bike(models.Model):
 
     def __unicode__(self):
         return u'{} {} {}'.format(self.year, self.make, self.model)
+
+    def stats(self):
+        if self.cylinders:
+            yield 'Engine: {} {}'.format(form_choices[self.engineform-1][1]
+                                         .capitalize(), self.cylinders)
+        if self.displacement:
+            yield 'Displacement: {}cc'.format(self.displacement)
+        if self.fairings:
+            yield 'Fairings: {}'.format(fairing_choices[self.fairings-1][1]
+                                        .capitalize())
+        if self.height:
+            yield 'Height: {}cm'.format(self.height)
+        if self.ignition:
+            yield 'Ignition: {}'.format(ignition_choices[self.ignition-1][1]
+                                        .capitalize())
+        if self.link:
+            yield 'Manufacturer link: {}'.format(self.link)
+        if self.make:
+            yield 'Make: {}'.format(self.make)
+        if self.model:
+            yield 'Model: {}'.format(self.model)
+        if self.power:
+            yield 'Power: {}kW'.format(self.power)
+        if self.price:
+            yield 'Price: ${}'.format(self.price)
+        if self.seats:
+            yield 'Seats: {}'.format(self.seats)
+        if self.strokes:
+            yield 'Strokes: {}'.format(self.strokes)
+        if self.weight:
+            yield 'Weight: {}kg'.format(self.weight)
+        if self.year:
+            yield 'Release Year: {}'.format(self.year)
 

@@ -45,14 +45,36 @@ class UnitTestCase(TestCase):
         q = Bike.objects.all()
         self.assertEqual(len(q), 0)
 
+    def test_stat_listing(self):
+        b = Bike.objects.first()
+        s = []
+        for stat in b.stats():
+            s.append(stat)
+        self.assertIn('Engine: Inline 2', s)
+
+        b.engineform = 2
+        s = []
+        for stat in b.stats():
+            s.append(stat)
+        self.assertIn('Engine: V 2', s)
+
 class IntegrationTestCase(TestCase):
     def setUp(self):
         self.c = Client()
 
         b = Bike()
-        b.year = 1981
+        b.cylinders = 2
+        b.displacement = 392
+        b.engineform = 1
+        b.fairings = 1
+        b.ignition = 1
         b.make = 'Yamaha'
         b.model = 'XS400'
+        b.power = 27
+        b.seats = 2
+        b.strokes = 4
+        b.weight = 182
+        b.year = 1981
         b.save()
 
         b = Bike()
@@ -93,6 +115,8 @@ class IntegrationTestCase(TestCase):
         r = self.c.get('/1/')
         self.assertEqual(200, r.status_code)
         self.assertIn('1981 Yamaha XS400', r.content)
+        self.assertIn('Displacement: 392cc', r.content)
+        self.assertIn('Power: 27kW', r.content)
 
         r = self.c.get('/2/')
         self.assertEqual(200, r.status_code)

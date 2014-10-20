@@ -2,5 +2,8 @@
 
 {% block content %}
 <h1>{{ bike }}</h1>
+{% for s in bike.stats %}
+    <li>{{ s }}</li>
+{% endfor %}
 {% endblock %}
 
