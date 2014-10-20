@@ -27,14 +27,14 @@ class Bike(models.Model):
     height = models.IntegerField(null=True)
     ignition = models.IntegerField(choices=ignition_choices, null=True)
     link = models.URLField(null=True)
-    make = models.CharField(max_length=20, null=True)
-    model = models.CharField(max_length=30, null=True)
+    make = models.CharField(max_length=20)
+    model = models.CharField(max_length=30)
     power = models.IntegerField(null=True)
     price = models.IntegerField(null=True)
     seats = models.IntegerField(null=True)
     strokes = models.IntegerField(null=True)
     weight = models.IntegerField(null=True)
-    year = models.IntegerField(null=True)
+    year = models.IntegerField()
 
     # TODO
     # Add variable features like electrical starters, etc...
