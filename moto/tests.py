@@ -96,4 +96,5 @@ class IntegrationTestCase(TestCase):
         r = self.c.get('/3/')
         self.assertEqual(404, r.status_code)
         self.assertNotIn('1981 Yamaha XS400', r.content)
+        self.assertNotIn('2008 Honda CBR1000RR', r.content)
 
