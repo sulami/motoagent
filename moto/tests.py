@@ -61,6 +61,11 @@ class IntegrationTestCase(TestCase):
         b.model = 'CBR1000RR'
         b.save()
 
+    def test_site_up(self):
+        r = self.c.get('/')
+        self.assertEqual(200, r.status_code)
+        self.assertIn('<title>MotoAgent</title>', r.content)
+
     def test_table_with_all_bikes(self):
         r = self.c.get('/')
         self.assertEqual(200, r.status_code)
